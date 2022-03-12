@@ -23,15 +23,29 @@ async function run() {
       await client.connect();
       //console.log('connected to the database')
       const database = client.db("tsunami-tour");
-      const blogsCollection = database.collection("blogs");
+      const servicesCollection = database.collection("services");
+      const discountsCollection = database.collection("discounts");
+      const purchaseCollection = database.collection("purchase")
       const experienceCollection = database.collection("experience");
       const reviewCollection = database.collection("review");
       
       //get api
-      app.get('/blogs', async(req, res)=>{
-        const cursor = blogsCollection.find({});
-        const blogs = await cursor.toArray();
-        res.send(blogs);
+      app.get('/services', async(req, res)=>{
+        const cursor = servicesCollection.find({});
+        const services = await cursor.toArray();
+        res.send(services);
+      })
+      app.get('/discounts', async(req, res)=>{
+        const cursor = discountsCollection.find({});
+        const discounts = await cursor.toArray();
+        res.send(discounts);
+      })
+      
+
+      app.get('/purchase', async(req, res)=>{
+        const cursor = purchaseCollection.find({});
+        const purchase = await cursor.toArray();
+        res.send(purchase);
       })
       app.get('/experience', async(req, res)=>{
         const cursor = experienceCollection.find({});
@@ -45,25 +59,41 @@ async function run() {
       })
 
       //get single service
-      app.get('/blogs/:id', async(req, res) =>{
+      app.get('/services/:id', async(req, res) =>{
         const id = req.params.id;
         console.log('getting specific service', id)
         const query = {_id: ObjectId(id)};
-        const service = await blogsCollection.findOne(query);
+        const service = await servicesCollection.findOne(query);
         res.json(service);
+      })
+      app.get('/discounts/:id', async(req, res) =>{
+        const id = req.params.id;
+        console.log('getting specific discounts', id)
+        const query = {_id: ObjectId(id)};
+        const discount = await discountsCollection.findOne(query);
+        res.json(discount);
       })
 
       //Post api
-      app.post('/blogs', async(req, res)=>{
+      app.post('/services', async(req, res)=>{
         const service = req.body;
          console.log('hit the post api', service);
 
-         const result = await blogsCollection.insertOne(service);
+         const result = await servicesCollection.insertOne(service);
          console.log(result);
          res.json(result)
       
         }) ;
-
+        app.post('/discounts', async(req, res)=>{
+          const discount = req.body;
+           console.log('hit the post api', discount);
+  
+           const result = await discountsCollection.insertOne(discount);
+           console.log(result);
+           res.json(result)
+        
+          }) ;
+  
         app.post('/experience', async(req, res)=>{
           const user = req.body;
            console.log('hit the post api', user);
