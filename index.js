@@ -24,6 +24,7 @@ async function run() {
       //console.log('connected to the database')
       const database = client.db("tsunami-tour");
       const servicesCollection = database.collection("services");
+      const blogsCollection = database.collection("blogs");
       const discountsCollection = database.collection("discounts");
       const purchaseCollection = database.collection("purchase")
       const experienceCollection = database.collection("experience");
@@ -40,7 +41,11 @@ async function run() {
         const discounts = await cursor.toArray();
         res.send(discounts);
       })
-      
+      app.get('/blogs', async(req, res)=>{
+        const cursor = blogsCollection.find({});
+        const blogs = await cursor.toArray();
+        res.send(blogs);
+      })
 
       app.get('/purchase', async(req, res)=>{
         const cursor = purchaseCollection.find({});
