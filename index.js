@@ -145,3 +145,7 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log('Running tsunami tour on port',port)
 })
+
+
+// DB_USER=tsunami-tour 
+// DB_PASS=hMibA7K53u7uj8rW
